@@ -1,5 +1,6 @@
 function BusTimeline(busline, busstop) {
-  try{  
+  try{
+  // 基本変数  
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(busline);
   var sheet_values = sheet.getRange(1,1, sheet.getLastRow(), sheet.getLastColumn()).getValues();;  
   var now = new Date();
@@ -7,7 +8,7 @@ function BusTimeline(busline, busstop) {
   var nowMin = now.getMinutes();
   var index;
   var bus_stop_name = busstop;
-  
+  // スプレッドシートから時刻表を取り出す
   for(var i =1 ;i< sheet_values.length;i++){
     if(sheet_values[i][1] === busstop){
       var index = sheet_values[i][0];
@@ -15,6 +16,7 @@ function BusTimeline(busline, busstop) {
       
     }
   }
+  // 近接時間の取り出し
   var recent = "なし";
   var next = "なし";
   var timelag = 0;
@@ -35,6 +37,7 @@ function BusTimeline(busline, busstop) {
         recent = formatTime2str(timeHour, timeMin); 
       }
     }
+    // メッセージの生成
     if (recent == "なし"){
       return "今日のバスの運行はすべて終了しました。";
     }else{
@@ -46,11 +49,11 @@ function BusTimeline(busline, busstop) {
   }
 }
 
-
+// 時刻をメッセージに反映
 function formatTime2str(hours, minutes){
     return ("0"+ hours).slice(-2) + ":" + ("0" + minutes).slice(-2);    
 } 
-
+// AWSからきたURLをget処理→AWSへ返信
 function doGet(e){
   var res = ContentService.createTextOutput();
   var busline = e.parameter.busline;
